@@ -1,0 +1,931 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<meta name="color-scheme" content="dark">
+<meta name="theme-color" content="#0B0A0D">
+<meta name="description" content="The Unsent Universe: a quiet place for unsent letters, unspoken gratitude and words that never found a home.">
+<title>The Unsent Universe</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Caveat:wght@400;500&family=Cormorant+Garamond:ital,wght@0,400;0,500;0,600;1,400;1,500&family=DM+Sans:wght@400;500&display=swap" rel="stylesheet">
+<style>
+:root{
+  --obsidian:#0B0A0D; --charcoal:#171319; --burgundy:#632C3A; --rose:#C39A9E; --ivory:#F1E8DF; --gray:#969097;
+  --line:rgba(195,154,158,.18); --line-strong:rgba(195,154,158,.42);
+  --serif:'Cormorant Garamond',Georgia,'Times New Roman',serif;
+  --sans:'DM Sans',system-ui,-apple-system,'Segoe UI',sans-serif;
+  --hand:'Caveat','Segoe Script','Bradley Hand',cursive;
+  --ease:cubic-bezier(.2,.7,.2,1);
+  box-sizing:border-box;
+  padding-top:env(safe-area-inset-top,0px);
+  padding-bottom:env(safe-area-inset-bottom,0px);
+}
+*,*::before,*::after{box-sizing:border-box}
+html{background:var(--obsidian);scroll-padding-top:env(safe-area-inset-top,0px);-webkit-text-size-adjust:100%}
+body{margin:0;background:var(--obsidian);color:var(--ivory);font:400 1rem/1.65 var(--sans);-webkit-font-smoothing:antialiased;text-rendering:optimizeLegibility;overflow-x:hidden}
+h1,h2,h3,h4{font-family:var(--serif);font-weight:500;margin:0;line-height:1.1}
+p{margin:0 0 1em}
+a{color:var(--rose)}
+img,svg{max-width:100%}
+button{font:inherit;color:inherit}
+:focus-visible{outline:2px solid var(--rose);outline-offset:3px;border-radius:4px}
+[hidden]{display:none!important}
+.sr{position:absolute!important;width:1px;height:1px;overflow:hidden;clip:rect(0 0 0 0);white-space:nowrap}
+.skip{position:absolute;left:1rem;top:-4rem;z-index:100;background:var(--ivory);color:var(--obsidian);padding:.6rem 1rem;border-radius:6px;text-decoration:none}
+.skip:focus{top:calc(env(safe-area-inset-top,0px) + .6rem)}
+.muted{color:var(--gray)}
+.wrap{width:min(1120px,calc(100% - 2.5rem));margin-inline:auto}
+
+/* atmosphere */
+.atmos,#sky,.grain{position:fixed;inset:0;pointer-events:none}
+.atmos{z-index:0;background:
+  radial-gradient(55% 45% at 88% -5%,rgba(99,44,58,.42),transparent 70%),
+  radial-gradient(45% 40% at -5% 105%,rgba(195,154,158,.09),transparent 70%),
+  radial-gradient(35% 30% at 50% 55%,rgba(99,44,58,.12),transparent 75%),
+  linear-gradient(180deg,#0B0A0D 0%,#110d13 50%,#0B0A0D 100%)}
+#sky{z-index:0;width:100%;height:100%}
+.grain{z-index:90;opacity:.06;mix-blend-mode:screen}
+.site{position:relative;z-index:2;min-height:100vh;display:flex;flex-direction:column}
+main{flex:1;outline:none}
+main.enter{animation:enter .7s var(--ease) both}
+@keyframes enter{from{opacity:0;transform:translateY(10px)}to{opacity:1;transform:none}}
+
+/* demo strip */
+.demo{background:rgba(99,44,58,.35);border-bottom:1px solid var(--line);font-size:.86rem;text-align:center;padding:.5rem 1rem;color:rgba(241,232,223,.9)}
+.demo button{background:none;border:0;text-decoration:underline;cursor:pointer;color:var(--rose);margin-left:.6rem;padding:.2rem}
+
+/* nav */
+.nav{position:sticky;top:env(safe-area-inset-top,0px);z-index:20;backdrop-filter:blur(14px);-webkit-backdrop-filter:blur(14px);background:linear-gradient(180deg,rgba(11,10,13,.88),rgba(11,10,13,.58));border-bottom:1px solid rgba(195,154,158,.1)}
+.nav-in{display:flex;align-items:center;justify-content:space-between;height:4.2rem}
+.mark{font-family:var(--serif);font-style:italic;font-size:1.5rem;color:var(--ivory);text-decoration:none;display:inline-flex;align-items:center;gap:.65rem}
+.mark svg{width:30px;height:20px;flex:none}
+.links{display:none;gap:1.9rem;align-items:center}
+.links a{color:rgba(241,232,223,.78);text-decoration:none;font-size:.95rem;padding:.4rem 0;border-bottom:1px solid transparent;transition:color .3s,border-color .3s}
+.links a:hover,.links a[aria-current=page]{color:var(--ivory);border-color:var(--rose)}
+.links a.cta{border:1px solid var(--line-strong);padding:.5rem 1.1rem;border-radius:999px}
+.links a.cta:hover,.links a.cta[aria-current=page]{background:rgba(99,44,58,.5)}
+.menu-btn{background:none;border:1px solid var(--line-strong);border-radius:999px;padding:.45rem 1rem;cursor:pointer;font-size:.92rem}
+.mobile-menu{display:grid;gap:.2rem;padding:.6rem 1.25rem 1.6rem;border-top:1px solid var(--line);background:rgba(11,10,13,.96)}
+.mobile-menu a{font-family:var(--serif);font-size:1.9rem;color:var(--ivory);text-decoration:none;padding:.35rem 0}
+.mobile-menu a[aria-current=page]{color:var(--rose)}
+@media(min-width:860px){.links{display:flex}.menu-btn,.mobile-menu{display:none!important}}
+
+/* buttons */
+.btn{display:inline-flex;align-items:center;justify-content:center;gap:.5rem;min-height:3rem;padding:.7rem 1.55rem;border-radius:999px;font:500 .98rem var(--sans);border:1px solid var(--line-strong);background:transparent;color:var(--ivory);cursor:pointer;text-decoration:none;transition:transform .35s var(--ease),background .35s,border-color .35s,box-shadow .35s}
+.btn:hover{transform:translateY(-2px);border-color:var(--rose)}
+.btn:active{transform:translateY(0) scale(.99)}
+.btn.primary{background:var(--burgundy);border-color:#8a4757;box-shadow:0 12px 34px -14px rgba(99,44,58,.95)}
+.btn.primary:hover{background:#7a3748}
+.btn.quiet{border-color:transparent;color:var(--rose);padding-inline:.9rem}
+.btn.quiet:hover{border-color:var(--line)}
+.btn[aria-pressed=true]{background:rgba(195,154,158,.16);border-color:var(--rose)}
+.btn.small{min-height:2.4rem;padding:.4rem 1.1rem;font-size:.9rem}
+
+/* hero */
+.hero{display:grid;gap:3rem;align-items:center;padding:clamp(2.5rem,8vw,6.5rem) 0 clamp(3rem,7vw,5.5rem)}
+@media(min-width:900px){.hero{grid-template-columns:1.2fr .8fr}}
+.hero h1{font-size:clamp(3.3rem,9.4vw,6.8rem);line-height:.95;font-weight:400;letter-spacing:-.012em;margin-bottom:1.6rem}
+.lede{max-width:33rem;color:rgba(241,232,223,.8);font-size:1.1rem}
+.hero-cta{display:flex;flex-wrap:wrap;gap:.9rem;margin-top:2rem}
+.whisper{font-family:var(--hand);font-size:1.7rem;line-height:1.2;color:var(--rose);margin:2.4rem 0 0}
+.rise{animation:rise 1.4s var(--ease) both}
+.d1{animation-delay:.15s}.d2{animation-delay:.4s}.d3{animation-delay:.7s}.d4{animation-delay:1.1s}
+@keyframes rise{from{opacity:0;transform:translateY(18px);filter:blur(4px)}to{opacity:1;transform:none;filter:none}}
+
+/* envelope */
+.env-stage{position:relative;display:grid;place-items:center;min-height:330px}
+.env-stage::before{content:'';position:absolute;width:440px;height:440px;max-width:100%;border-radius:50%;background:radial-gradient(circle,rgba(195,154,158,.22),transparent 65%);filter:blur(18px)}
+.env-wrap{position:relative;text-align:center}
+.envelope{position:relative;display:block;width:min(340px,80vw);aspect-ratio:340/230;background:none;border:0;padding:0;cursor:pointer;perspective:900px;transition:transform .6s var(--ease);margin-inline:auto}
+.envelope:hover{transform:translateY(-5px) rotate(-1.2deg)}
+.envelope>span{position:absolute;display:block}
+.env-back{inset:0;background:linear-gradient(160deg,#2a1f28,#1a141a);border:1px solid rgba(195,154,158,.3);border-radius:6px;box-shadow:0 40px 80px -30px #000}
+.env-paper{left:7%;right:7%;top:9%;bottom:6%;z-index:2;background:var(--ivory);border-radius:3px;padding:.9rem 1.1rem;color:#3a2b32;font-family:var(--hand);font-size:1.3rem;line-height:1.25;text-align:left;transition:transform 1.1s cubic-bezier(.3,.7,.2,1);background-image:repeating-linear-gradient(transparent,transparent 25px,rgba(99,44,58,.14) 26px)}
+.envelope.open .env-paper{transform:translateY(-54%)}
+.env-front{inset:0;z-index:3;border-radius:6px;background:linear-gradient(170deg,#35262f,#1e161d);clip-path:polygon(0 0,50% 58%,100% 0,100% 100%,0 100%)}
+.env-flap{left:0;right:0;top:0;height:58%;z-index:4;background:linear-gradient(180deg,#432f3b,#2a1f28);clip-path:polygon(0 0,100% 0,50% 100%);transform-origin:top center;transition:transform .9s cubic-bezier(.3,.7,.2,1),z-index 0s .4s;border-radius:6px 6px 0 0}
+.envelope:hover .env-flap{transform:rotateX(16deg)}
+.envelope.open .env-flap{transform:rotateX(180deg);z-index:1}
+.env-seal{left:50%;top:calc(58% - 19px);width:38px;height:38px;margin-left:-19px;z-index:5;border-radius:50%;background:radial-gradient(circle at 35% 30%,#94505f,#4a1e2d);box-shadow:0 4px 14px rgba(0,0,0,.6),inset 0 0 0 3px rgba(0,0,0,.18);transition:opacity .4s,transform .6s}
+.env-seal::after{content:'';position:absolute;inset:11px;background:var(--rose);clip-path:polygon(50% 0,60% 40%,100% 50%,60% 60%,50% 100%,40% 60%,0 50%,40% 40%);opacity:.8}
+.envelope.open .env-seal{opacity:0;transform:scale(.5)}
+.env-cap{margin-top:1.6rem;font-size:.95rem;color:var(--gray)}
+
+/* sections */
+.section{padding:clamp(2.5rem,6vw,5rem) 0}
+.page{padding:clamp(2.5rem,6vw,4.5rem) 0 4rem}
+.page-head{max-width:42rem;margin-bottom:2.4rem}
+.page-head h1{font-size:clamp(2.6rem,6.5vw,4.4rem);font-weight:400;margin-bottom:1rem}
+.lead{font-size:1.1rem;color:rgba(241,232,223,.8)}
+.sec-head{max-width:38rem;margin-bottom:3rem}
+.sec-head h2{font-size:clamp(2.1rem,5vw,3.2rem);font-weight:400;margin-bottom:.8rem}
+
+.feature{position:relative;overflow:hidden;border:1px solid var(--line);border-radius:6px;padding:clamp(1.8rem,5vw,3.6rem);background:linear-gradient(135deg,rgba(99,44,58,.28),rgba(23,19,25,.7) 55%);display:grid;gap:1.6rem;align-items:center}
+@media(min-width:800px){.feature{grid-template-columns:1.3fr .7fr}}
+.feature h2{font-size:clamp(2.2rem,5vw,3.4rem);font-weight:400}
+.feature p{max-width:30rem;color:rgba(241,232,223,.8);margin-bottom:1.4rem}
+.feature svg{width:100%;max-width:260px;justify-self:center;opacity:.9}
+
+/* thread of letters */
+.thread{position:relative;display:grid;gap:3rem;padding-left:2.2rem}
+.thread::before{content:'';position:absolute;left:.6rem;top:0;bottom:0;width:1px;background:linear-gradient(180deg,transparent,rgba(195,154,158,.45) 6%,rgba(195,154,158,.45) 94%,transparent)}
+.thread-item{position:relative}
+.thread-item::before{content:'';position:absolute;top:2.1rem;left:calc(-1.6rem - 3.5px);width:7px;height:7px;border-radius:50%;background:var(--rose);box-shadow:0 0 14px rgba(195,154,158,.8)}
+.thread-item::after{content:'';position:absolute;top:calc(2.1rem + 3px);left:-1.6rem;width:1.2rem;height:1px;background:rgba(195,154,158,.3)}
+@media(min-width:900px){
+  .thread{padding-left:0;gap:2.2rem}
+  .thread::before{left:50%}
+  .thread-item{width:calc(50% - 3.2rem)}
+  .thread-item:nth-child(even){margin-left:auto}
+  .thread-item:nth-child(odd)::before{left:auto;right:calc(-3.2rem - 3.5px)}
+  .thread-item:nth-child(odd)::after{left:auto;right:-3.2rem;width:3.2rem}
+  .thread-item:nth-child(even)::before{left:calc(-3.2rem - 3.5px)}
+  .thread-item:nth-child(even)::after{left:-3.2rem;width:3.2rem}
+}
+.grid{display:grid;gap:1.4rem}
+@media(min-width:760px){.grid{grid-template-columns:repeat(2,1fr)}}
+@media(min-width:1060px){.grid{grid-template-columns:repeat(3,1fr)}}
+
+/* cards */
+.card{position:relative;background:linear-gradient(180deg,rgba(23,19,25,.92),rgba(16,12,18,.92));border:1px solid var(--line);border-radius:4px;padding:1.6rem 1.7rem 1.4rem;transition:border-color .4s,transform .5s var(--ease),box-shadow .5s}
+.card:hover,.card:focus-within{border-color:var(--line-strong);transform:translateY(-3px);box-shadow:0 30px 60px -32px #000,0 0 50px -30px rgba(99,44,58,.9)}
+.meta{display:flex;flex-wrap:wrap;justify-content:space-between;gap:.4rem 1rem;font-size:.86rem;color:var(--gray)}
+.cat{display:inline-flex;align-items:center;gap:.5rem;color:var(--rose)}
+.cat::before{content:'';width:5px;height:5px;background:var(--rose);transform:rotate(45deg)}
+.card h3{font-size:1.8rem;line-height:1.12;margin:.95rem 0 .7rem;font-weight:500}
+.preview{font-family:var(--serif);font-size:1.2rem;line-height:1.6;color:rgba(241,232,223,.84);max-height:6.5em;overflow:hidden;transition:max-height .8s var(--ease);-webkit-mask-image:linear-gradient(180deg,#000 55%,transparent);mask-image:linear-gradient(180deg,#000 55%,transparent)}
+.preview p{margin:0 0 .6em}
+.card:focus-within .preview{max-height:13em}
+@media(hover:hover){.card:hover .preview{max-height:13em}}
+.read{display:inline-flex;margin-top:1rem;color:var(--ivory);text-decoration:none;border-bottom:1px solid var(--line-strong);padding-bottom:2px;font-size:.95rem}
+.read::after{content:'';position:absolute;inset:0}
+.read:focus-visible{outline:none}
+.card:has(.read:focus-visible){outline:2px solid var(--rose);outline-offset:3px}
+
+/* prompt */
+.prompt-card{border:1px solid var(--line);border-radius:6px;padding:clamp(1.8rem,5vw,3.4rem);background:rgba(23,19,25,.7);display:grid;gap:1.4rem;justify-items:start}
+.prompt-text{font-family:var(--serif);font-style:italic;font-size:clamp(1.9rem,4.6vw,3rem);line-height:1.18;max-width:34rem}
+.prompt-big{text-align:center;justify-items:center;padding:clamp(2.4rem,7vw,5rem) clamp(1.4rem,5vw,3rem)}
+.prompt-big .prompt-text{font-size:clamp(2.2rem,6vw,4rem);max-width:40rem}
+.past{display:grid;gap:.5rem;margin-top:2.4rem;max-width:42rem}
+.past button{text-align:left;background:none;border:0;border-bottom:1px solid var(--line);padding:.9rem 0;font-family:var(--serif);font-size:1.3rem;color:rgba(241,232,223,.85);cursor:pointer;transition:color .3s,padding .4s var(--ease)}
+.past button:hover{color:var(--ivory);padding-left:.6rem}
+
+/* controls */
+.controls{display:grid;gap:1.1rem;margin-bottom:1.4rem}
+.search-row{display:grid;gap:.8rem}
+@media(min-width:760px){.search-row{grid-template-columns:1fr auto auto;align-items:end}}
+label,.label{display:block;font-size:.9rem;color:rgba(241,232,223,.85);margin-bottom:.4rem}
+input,textarea,select{width:100%;background:rgba(23,19,25,.85);border:1px solid rgba(195,154,158,.28);color:var(--ivory);border-radius:6px;padding:.8rem 1rem;font:inherit;min-height:3rem;transition:border-color .3s,box-shadow .3s}
+input:hover,textarea:hover,select:hover{border-color:var(--line-strong)}
+input:focus-visible,textarea:focus-visible,select:focus-visible{outline:2px solid var(--rose);outline-offset:2px}
+input::placeholder,textarea::placeholder{color:#8b858c}
+select option{background:#171319;color:var(--ivory)}
+input[type=checkbox]{width:1.25rem;height:1.25rem;min-height:0;accent-color:var(--burgundy);flex:none;margin-top:.2rem}
+input[aria-invalid=true],textarea[aria-invalid=true],select[aria-invalid=true]{border-color:#e7a8a8}
+.chips{display:flex;flex-wrap:wrap;gap:.5rem}
+.chip{background:transparent;border:1px solid rgba(195,154,158,.3);color:rgba(241,232,223,.85);padding:.45rem 1rem;border-radius:999px;cursor:pointer;font-size:.9rem;transition:background .3s,border-color .3s}
+.chip:hover{border-color:var(--rose)}
+.chip[aria-pressed=true]{background:var(--burgundy);border-color:#8a4757;color:var(--ivory)}
+.empty{border:1px dashed var(--line-strong);border-radius:6px;padding:3rem 1.5rem;text-align:center;grid-column:1/-1}
+.empty h3{font-size:1.8rem;margin-bottom:.6rem}
+.empty p{color:rgba(241,232,223,.75);margin-bottom:1.2rem}
+
+/* reading */
+.reading{max-width:46rem;margin-inline:auto}
+.back{display:inline-block;margin-bottom:2rem;color:var(--gray);text-decoration:none;font-size:.95rem}
+.back:hover{color:var(--ivory)}
+.paper{background:linear-gradient(180deg,#1c161d,#151016);border:1px solid rgba(195,154,158,.22);border-radius:6px;padding:clamp(1.6rem,5vw,3.4rem);box-shadow:0 50px 120px -50px #000}
+.paper h1,.paper h2.ptitle{font-size:clamp(2.1rem,5vw,3.2rem);font-weight:400;margin:1.1rem 0 1.6rem;outline:none}
+.letter-body{font-family:var(--serif);font-size:clamp(1.3rem,3vw,1.5rem);line-height:1.75;color:rgba(241,232,223,.93)}
+.letter-body p{margin:0 0 1.15em}
+.hand .letter-body{font-family:var(--hand);font-size:clamp(1.6rem,3.6vw,1.95rem);line-height:1.5}
+.sign{font-family:var(--hand);font-size:1.6rem;color:var(--rose);margin:1.6rem 0 0}
+.react-block{margin-top:2rem;padding-top:1.6rem;border-top:1px solid var(--line);display:grid;gap:1rem}
+.reacts{display:flex;flex-wrap:wrap;gap:.6rem}
+.react{background:transparent;border:1px solid rgba(195,154,158,.3);border-radius:999px;padding:.5rem 1rem;cursor:pointer;font-size:.9rem;display:inline-flex;align-items:center;gap:.5rem;transition:background .3s,border-color .3s,transform .3s var(--ease)}
+.react::before{content:'';width:6px;height:6px;border-radius:50%;border:1px solid var(--rose);transition:background .3s}
+.react:hover{border-color:var(--rose);transform:translateY(-1px)}
+.react[aria-pressed=true]{background:rgba(195,154,158,.15);border-color:var(--rose)}
+.react[aria-pressed=true]::before{background:var(--rose)}
+.actions{display:flex;flex-wrap:wrap;gap:.7rem;margin-top:1.6rem}
+
+/* reader overlay */
+.reader{position:fixed;inset:0;z-index:60;overflow:auto;background:radial-gradient(70% 60% at 50% 35%,rgba(32,21,29,.94),rgba(7,6,9,.98));animation:fade .7s both;padding:1rem 1rem calc(2rem + env(safe-area-inset-bottom,0px));padding-top:calc(1rem + env(safe-area-inset-top,0px))}
+@keyframes fade{from{opacity:0}to{opacity:1}}
+.r-in{width:min(700px,100%);margin:0 auto}
+.r-top{display:flex;justify-content:space-between;align-items:flex-start;gap:1rem;margin:.6rem 0 1.4rem;color:var(--gray);font-size:.92rem}
+.r-top p{margin:0;max-width:30rem}
+.r-paper{position:relative;animation:arrive 1.6s var(--ease) both}
+@keyframes arrive{0%{opacity:0;transform:translate3d(60px,-80px,0) rotate(3deg) scale(.95);filter:blur(10px)}60%{opacity:1;filter:blur(0)}100%{opacity:1;transform:none;filter:none}}
+.streak{position:fixed;top:-10%;right:10%;width:2px;height:180px;background:linear-gradient(180deg,transparent,#F1E8DF);transform:rotate(28deg);opacity:0;animation:streak 1.3s ease-out both;pointer-events:none}
+@keyframes streak{0%{opacity:0;transform:translate(0,0) rotate(28deg)}15%{opacity:.9}100%{opacity:0;transform:translate(-55vw,70vh) rotate(28deg)}}
+.r-actions{display:flex;flex-wrap:wrap;gap:.7rem;margin-top:1.6rem;justify-content:center}
+
+/* modal */
+.scrim{position:fixed;inset:0;z-index:70;background:rgba(5,4,7,.78);backdrop-filter:blur(4px);animation:fade .3s both}
+.modal{position:fixed;z-index:80;left:50%;top:50%;transform:translate(-50%,-50%);width:min(520px,calc(100% - 2rem));max-height:calc(100% - 2rem);overflow:auto;background:#171319;border:1px solid var(--line-strong);border-radius:8px;padding:1.8rem;box-shadow:0 40px 100px -30px #000;animation:pop .45s var(--ease) both}
+@keyframes pop{from{opacity:0;transform:translate(-50%,-47%)}to{opacity:1;transform:translate(-50%,-50%)}}
+.modal h2{font-size:2rem;font-weight:500;margin-bottom:1rem}
+.modal fieldset{border:0;padding:0;margin:0 0 1rem}
+.modal legend{padding:0;margin-bottom:.5rem;font-size:.9rem}
+.radio{display:flex;gap:.7rem;align-items:flex-start;padding:.4rem 0;cursor:pointer}
+.radio input{width:1.15rem;height:1.15rem;min-height:0;accent-color:var(--burgundy);margin-top:.25rem}
+.modal-actions{display:flex;flex-wrap:wrap;gap:.7rem;justify-content:flex-end;margin-top:1.2rem}
+
+/* toasts */
+#toasts{position:fixed;left:50%;bottom:calc(1.2rem + env(safe-area-inset-bottom,0px));transform:translateX(-50%);z-index:120;display:grid;gap:.5rem;width:min(440px,calc(100% - 2rem));pointer-events:none}
+.toast{background:#241a22;border:1px solid var(--line-strong);border-radius:8px;padding:.8rem 1.1rem;font-size:.94rem;box-shadow:0 20px 50px -20px #000;animation:toast .5s var(--ease) both}
+.toast.out{opacity:0;transform:translateY(8px);transition:all .45s}
+@keyframes toast{from{opacity:0;transform:translateY(12px)}to{opacity:1;transform:none}}
+
+/* write */
+.write-grid{display:grid;gap:2rem}
+@media(min-width:960px){.write-grid{grid-template-columns:1.5fr .9fr;align-items:start}}
+.field{margin-bottom:1.4rem}
+.field .row{display:flex;justify-content:space-between;gap:1rem;align-items:baseline}
+.hint{font-size:.86rem;color:var(--gray);margin:.35rem 0 0}
+.err{color:#eab0b0;font-size:.9rem;margin:.45rem 0 0}
+textarea#w-body{font-family:var(--serif);font-size:1.35rem;line-height:1.7;min-height:22rem;resize:vertical;padding:1.2rem 1.3rem;background:rgba(23,19,25,.9)}
+.two{display:grid;gap:1rem}
+@media(min-width:620px){.two{grid-template-columns:1fr 1fr}}
+.counter{font-size:.86rem;color:var(--gray);font-variant-numeric:tabular-nums}
+.counter.near{color:#eab0b0}
+.notice{border:1px solid var(--line-strong);background:rgba(99,44,58,.22);border-radius:6px;padding:1.1rem 1.25rem;font-size:.95rem;margin-bottom:1.6rem}
+.notice strong{font-weight:500;color:var(--ivory)}
+.side{border:1px solid var(--line);border-radius:6px;padding:1.4rem;background:rgba(23,19,25,.6);font-size:.94rem;color:rgba(241,232,223,.82)}
+.side h2{font-size:1.5rem;margin-bottom:.7rem}
+.side ul{padding-left:1.1rem;margin:0 0 1rem}
+.side li{margin-bottom:.45rem}
+.check{display:flex;gap:.8rem;align-items:flex-start;margin:1.4rem 0;font-size:.95rem}
+.check label{margin:0;color:rgba(241,232,223,.9)}
+.hp{position:absolute;left:-9999px;width:1px;height:1px;overflow:hidden}
+.prompt-hint{border-left:2px solid var(--rose);padding:.2rem 0 .2rem 1rem;margin-bottom:1.6rem;font-family:var(--serif);font-style:italic;font-size:1.4rem}
+.done{text-align:center;max-width:36rem;margin:2rem auto;display:grid;justify-items:center;gap:1rem}
+.done svg{width:130px;height:130px}
+.done .ring{stroke-dasharray:340;stroke-dashoffset:340;animation:draw 1.8s .2s var(--ease) forwards}
+.done .star{stroke-dasharray:140;stroke-dashoffset:140;animation:draw 1.4s 1s var(--ease) forwards;fill:none}
+@keyframes draw{to{stroke-dashoffset:0}}
+
+/* prose */
+.prose{max-width:42rem}
+.prose h2{font-size:2rem;margin:2.6rem 0 .8rem;font-weight:500}
+.prose h3{font-size:1.45rem;margin:1.8rem 0 .5rem}
+.prose p,.prose li{color:rgba(241,232,223,.85)}
+.prose ul{padding-left:1.2rem}
+.prose li{margin-bottom:.5rem}
+.callout{border:1px solid var(--line-strong);background:rgba(23,19,25,.7);border-radius:6px;padding:1.1rem 1.3rem;margin:1.6rem 0}
+
+/* admin */
+.tabs{display:flex;flex-wrap:wrap;gap:.5rem;margin:1.6rem 0}
+.item{border:1px solid var(--line);border-radius:6px;padding:1.2rem 1.4rem;margin-bottom:1rem;background:rgba(23,19,25,.7)}
+.item h3{font-size:1.5rem;margin:.4rem 0}
+.item details{margin:.6rem 0 .2rem}
+.item summary{cursor:pointer;color:var(--rose)}
+.item .letter-body{font-size:1.15rem;margin-top:.8rem}
+.item .actions{margin-top:1rem}
+.tag{display:inline-block;font-size:.8rem;border:1px solid var(--line-strong);border-radius:999px;padding:.1rem .65rem;color:var(--gray)}
+
+/* footer */
+.foot{border-top:1px solid var(--line);margin-top:3rem;padding:3rem 0 2.5rem;background:linear-gradient(180deg,transparent,rgba(11,10,13,.8))}
+.foot-in{display:grid;gap:2rem}
+@media(min-width:760px){.foot-in{grid-template-columns:1.4fr 1fr}}
+.foot .line{font-family:var(--serif);font-style:italic;font-size:1.5rem;margin:.9rem 0 0;color:rgba(241,232,223,.9)}
+.foot nav{display:flex;flex-wrap:wrap;gap:.5rem 1.6rem;align-content:start}
+.foot nav a{color:rgba(241,232,223,.8);text-decoration:none}
+.foot nav a:hover{color:var(--ivory);text-decoration:underline}
+.fine{font-size:.85rem;color:var(--gray);grid-column:1/-1;max-width:46rem}
+
+@media (prefers-reduced-motion:reduce){
+  *,*::before,*::after{animation-duration:.01ms!important;animation-iteration-count:1!important;animation-delay:0s!important;transition-duration:.01ms!important;transition-delay:0s!important;scroll-behavior:auto!important}
+  .streak{display:none}
+}
+</style>
+</head>
+<body>
+<div class="atmos" aria-hidden="true"></div>
+<canvas id="sky" aria-hidden="true"></canvas>
+<div class="grain" aria-hidden="true"></div>
+
+<div class="site">
+  <a class="skip" href="#main" data-action="skip">Skip to content</a>
+  <div class="demo" id="demo" role="note">Demo mode: letters, reactions and reports are saved only in this browser. No server is connected, and nothing you write is sent anywhere.<button type="button" data-action="dismiss-demo">Dismiss</button></div>
+  <header class="nav">
+    <div class="wrap nav-in">
+      <a class="mark" href="#/" aria-label="The Unsent Universe, home">
+        <svg viewBox="0 0 30 20" fill="none" aria-hidden="true"><path d="M3 15 L12 6 L18 12 L27 3" stroke="#C39A9E" stroke-opacity=".55" stroke-width="1"/><circle cx="3" cy="15" r="1.7" fill="#F1E8DF"/><circle cx="12" cy="6" r="2.1" fill="#C39A9E"/><circle cx="18" cy="12" r="1.4" fill="#F1E8DF"/><circle cx="27" cy="3" r="1.8" fill="#C39A9E"/></svg>
+        The Unsent Universe
+      </a>
+      <nav class="links" aria-label="Main">
+        <a href="#/explore">Explore Letters</a>
+        <a href="#/prompt">Daily Prompt</a>
+        <a href="#/write" class="cta">Write a Letter</a>
+        <a href="#/about">About</a>
+      </nav>
+      <button type="button" class="menu-btn" id="menu-btn" aria-expanded="false" aria-controls="mmenu" data-action="menu">Menu</button>
+    </div>
+    <nav class="mobile-menu" id="mmenu" aria-label="Mobile" hidden>
+      <a href="#/explore">Explore Letters</a>
+      <a href="#/prompt">Daily Prompt</a>
+      <a href="#/write">Write a Letter</a>
+      <a href="#/about">About</a>
+    </nav>
+  </header>
+
+  <main id="main" tabindex="-1"></main>
+
+  <footer class="foot">
+    <div class="wrap foot-in">
+      <div>
+        <a class="mark" href="#/"><svg viewBox="0 0 30 20" fill="none" aria-hidden="true"><path d="M3 15 L12 6 L18 12 L27 3" stroke="#C39A9E" stroke-opacity=".55"/><circle cx="3" cy="15" r="1.7" fill="#F1E8DF"/><circle cx="12" cy="6" r="2.1" fill="#C39A9E"/><circle cx="18" cy="12" r="1.4" fill="#F1E8DF"/><circle cx="27" cy="3" r="1.8" fill="#C39A9E"/></svg>The Unsent Universe</a>
+        <p class="line">Every feeling deserves a place to land.</p>
+      </div>
+      <nav aria-label="Footer">
+        <a href="#/about">About</a>
+        <a href="#/guidelines">Guidelines</a>
+        <a href="#/privacy">Privacy</a>
+        <a href="#/contact">Contact</a>
+        <a href="#/admin">Moderation demo</a>
+      </nav>
+      <p class="fine">This is a demo build. The sample letters are fictional and were written for this site. If you are in immediate danger, please contact your local emergency services.</p>
+    </div>
+  </footer>
+</div>
+
+<div id="reader-root" hidden></div>
+<div id="modal-root" hidden></div>
+<div id="toasts" role="status" aria-live="polite"></div>
+<noscript><p style="position:relative;z-index:5;padding:2rem;text-align:center">The Unsent Universe needs JavaScript to run.</p></noscript>
+
+<script>
+(function(){
+'use strict';
+var $=function(s,r){return (r||document).querySelector(s)};
+var $$=function(s,r){return Array.prototype.slice.call((r||document).querySelectorAll(s))};
+var esc=function(s){return String(s).replace(/[&<>"']/g,function(c){return {'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]})};
+var mq=window.matchMedia('(prefers-reduced-motion: reduce)');
+var reduced=function(){return mq.matches};
+
+/* ---------- data ---------- */
+var CATS=['Love','Friendship','Family','Regret','Gratitude','Grief and change','Self-reflection','Letting go','Hope','Other'];
+var MOODS=['Tender','Heavy','Hopeful','Restless','Calm','Bittersweet'];
+var REACTIONS=[['understand','I understand'],['stayed','This stayed with me'],['alone','You are not alone'],['warmth','Sending warmth']];
+var REPORT_REASONS=['Contains identifying information','Harassment, threats or targeted abuse','Encourages harm','Spam or advertising','Something else'];
+var PROMPTS=[
+ 'What would you say if there were no consequences?',
+ 'Which memory do you return to when life gets difficult?',
+ 'What do you wish someone understood about you?',
+ 'What are you finally ready to let go of?',
+ 'Who taught you something they never knew they taught you?',
+ 'What did you almost say the last time you saw them?',
+ 'What would you tell the person you were five years ago?',
+ 'Which small kindness have you never forgotten?',
+ 'What are you still carrying that was never yours?',
+ 'What do you miss that you cannot quite name?',
+ 'What would you apologise for if you knew it would be heard?',
+ 'What do you hope is waiting for you a year from now?',
+ 'Who do you think of at odd hours, and why?',
+ 'What did you do well that nobody noticed?'
+];
+var T0=Date.now(),D=864e5;
+function mk(id,title,category,mood,age,score,body,hand){return {id:id,title:title,category:category,mood:mood,createdAt:T0-age,score:score,body:body,hand:!!hand,sample:true}}
+var SAMPLES=[
+mk('s1','To the person I never thanked','Gratitude','Tender',3*D,41,
+"You probably don't remember the afternoon in the school corridor. I was holding my bag against my chest like a shield, and you moved your things so I could sit beside you. You didn't ask why my eyes were red.\n\nIt was a small thing. It's also the reason I decided that people could be safe.\n\nI've spent years trying to be that for someone else, without ever saying where I learned it. If you ever wondered whether a quiet kindness lands somewhere: it did. It landed in me, and it's still travelling."),
+mk('s2','I hope life has been kind to you','Love','Bittersweet',6*D,38,
+"I don't wish we had stayed. I need you to know that first, because people hear the other thing in a sentence like this one.\n\nI wish you slow mornings. I hope someone remembers how you take your tea without being told. I hope the city you moved to turned out to be the one you imagined, and that the loneliness you were afraid of never learned your address.\n\nI think of you most in autumn, when the light goes gold and a little sad. It isn't longing exactly. It's more like reading the last page of a good book and wanting the characters well.\n\nBe well. I mean it more than I can say."),
+mk('s3','Things I wish I had said sooner','Family','Tender',9*D,52,
+"Dad,\n\nYou taught me to check the oil, to fold a map the right way, to wait out a silence. You never taught me how to say the soft things, and I don't think anyone taught you.\n\nSo here they are, late. I'm proud of how hard you worked. I'm sorry for the years I was embarrassed by your old truck. I notice you in my own laugh now, and I've stopped minding.\n\nI keep waiting for a moment that feels big enough to say this out loud. I'm starting to think there isn't one, and that's the whole problem.",true),
+mk('s4','To my younger self','Self-reflection','Hopeful',12*D,47,
+"You're sitting on the bathroom floor at a party, wondering what's wrong with you. Nothing is.\n\nYou will not become less sensitive. You'll become better at carrying it. The things people call too much will turn out to be exactly what some people were looking for.\n\nEat the cake. Say the thing. Stop apologising for taking up a chair.\n\nAlso: that friend you think is drifting? Call them. It matters more than the grade.\n\nI'm not far ahead of you. But I'm standing a little further along the road, and I can tell you the road continues."),
+mk('s5','I miss who we used to be','Friendship','Bittersweet',16*D,44,
+"We didn't have a fight. That's what makes it hard to explain. Nobody slammed a door. Our messages just got further apart, like two boats with the tide going out.\n\nI miss the voice notes that ran twelve minutes. I miss being the first person you told things to, and the way you'd say 'okay, but listen' before the real story.\n\nI don't know if I'm allowed to grieve someone who's still alive and a few streets away. But I am.\n\nIf you ever read this, I'm not asking for anything. I just didn't want it to go unsaid that you mattered.",true),
+mk('s6','A goodbye I never learned to say','Grief and change','Heavy',22*D,60,
+"There wasn't a last conversation. There was a Tuesday, and then there wasn't anything after it.\n\nI've been walking around with all the sentences I was saving for later. Some days they're heavy. Some days I realise I've gone an hour without them, and then I feel guilty, as if forgetting for an hour is a kind of leaving.\n\nSo here is the goodbye, clumsy and late. Thank you for the way you made ordinary days feel like they were on purpose. I'm still learning how to live in a world that has you in the past tense.\n\nI'll keep your handwriting on the recipe card. I'll keep making it badly."),
+mk('s7','The apartment on the third floor','Letting go','Calm',33*D,29,
+"I drove past last night and someone had hung different curtains. For a second it felt like being told a secret about a house I no longer have the key to.\n\nWe were happy there, and we were unhappy there, and both are true. The crooked shelf. The radiator that clanked in January. The evening I finally admitted I was leaving, standing in a kitchen that smelled of toast.\n\nI'm letting the curtains be someone else's. I'm letting the building go on without me.\n\nThank you for sheltering a version of me that I'm glad I outgrew."),
+mk('s8','For the teacher who stayed late','Gratitude','Tender',37*D,35,
+"You won't remember me. I was the one who never raised a hand.\n\nYou noticed anyway. You left my drawing on the board an extra week without saying why. You told me, once, that I saw things other people walked past.\n\nI became an illustrator. Not a famous one. Just a person who gets to look closely for a living. Every time I start a new page I hear your voice, flat and certain, as if you were reading out a fact.\n\nThank you for being certain when I wasn't."),
+mk('s9','You were right, and I was too proud','Regret','Heavy',41*D,33,
+"It took me nine years and a long, quiet drive to admit it. You told me the plan wouldn't work and I answered as if you'd insulted me.\n\nI wasn't angry about being wrong. I was angry about being seen.\n\nI'd like to say I'd do it differently now. Mostly I'd just listen a few seconds longer before defending myself, and those seconds might have been enough to keep us in the same room.\n\nI'm sorry. Not for the plan. For the tone I took with someone who only wanted me to be okay."),
+mk('s10',"A small promise to next year's me",'Hope','Hopeful',52*D,27,
+"I won't make big promises. You'd see through them.\n\nHere are the small ones. I'll keep a window open on days when it feels like nothing is changing. I'll let myself be bad at the new thing for longer than is comfortable. I'll say yes to one invitation a month, even when my first instinct is to stay in.\n\nIf it's been a hard year, and I'm sorry if it has, I hope you can still find one sentence in here that sounds like the person I'm trying to become.\n\nWhatever happened, I'm glad you're still writing."),
+mk('s11',"What I couldn't say at the airport",'Love','Bittersweet',63*D,49,
+"You were holding a coffee and pretending the departures board was interesting. I was pretending I wasn't counting the seconds.\n\nI said 'text me when you land.' What I meant was: I don't know how to stand in a world where you're eleven time zones away, and I'm not brave enough to ask you to stay.\n\nYou were right to go. I'd say so again. But I wish I had told you that the best part of my year was a Tuesday when nothing happened and you were there.\n\nSome feelings don't fit in a goodbye. They fit in a letter nobody sends."),
+mk('s12','For my sister, who always went first','Family','Tender',70*D,45,
+"You were the one who tried the cold water first, who talked to the strange kids, who got in trouble so I wouldn't have to.\n\nI used to think being the younger one meant I was following. Now I think it meant I got to watch someone be brave and copy it.\n\nWe don't talk as much as we should. We both say 'we should call' and then life piles up. I want you to know that in every room where I act braver than I feel, I'm doing an impression of you.\n\nCall me. Or I'll call you. One of us has to go first, and I think it's my turn.",true),
+mk('s13','The version of me who stayed quiet','Self-reflection','Calm',92*D,31,
+"I'd like to apologise to the person I was in that meeting, and in that kitchen, and in the car on the way home.\n\nYou weren't weak. You were protecting something. You'd learned early that speaking up could cost you, and you did the maths every time.\n\nBut I'm no longer sure the maths still applies. Maybe the room is safer now. Maybe I am.\n\nI'm going to practise saying small true things out loud. If my voice shakes, let it. A shaky voice is still a voice.\n\nThank you for keeping me safe for so long. You can rest now."),
+mk('s14','To whoever finds this','Other','Calm',118*D,36,
+"I don't know who you are. That's why this is easier to write.\n\nI'm leaving this here because I wanted to say something true into the dark and have it be received by someone, anyone, even if it's only a stranger on a bad night.\n\nHere it is: you're allowed to take your time. You're allowed to be unfinished. Most of the people you admire are too, and are also quietly worried they're the only one.\n\nI hope your tomorrow is a little gentler than your today.\n\nThat's all. That's the whole letter.")
+];
+
+/* ---------- storage (browser only) ---------- */
+var KEY='uu:demo:v1',mem=null;
+function fresh(){return {letters:[],status:{},reactions:{},reports:[],removals:[],writes:[]}}
+function load(){
+  if(mem)return mem;
+  var d=null;try{d=JSON.parse(localStorage.getItem(KEY))}catch(e){}
+  mem=fresh();if(d&&typeof d==='object'){for(var k in mem){if(d[k]!==undefined)mem[k]=d[k]}}
+  return mem;
+}
+function save(){try{localStorage.setItem(KEY,JSON.stringify(mem))}catch(e){}}
+function allLetters(){var d=load();return SAMPLES.concat(d.letters)}
+function stat(l){var d=load();return d.status[l.id]||l.status||'approved'}
+function pub(){return allLetters().filter(function(l){return stat(l)==='approved'}).sort(function(a,b){return b.createdAt-a.createdAt})}
+function getLetter(id){return allLetters().filter(function(l){return l.id===id})[0]}
+function mine(id){return load().reactions[id]||{}}
+function score(l){return (l.score||0)+Object.keys(mine(l.id)).length*3}
+function plural(n,u){return n+' '+u+(n===1?'':'s')}
+function ago(ts){
+  var s=Math.max(0,(Date.now()-ts)/1000);if(s<60)return 'just now';
+  var m=Math.floor(s/60);if(m<60)return plural(m,'minute')+' ago';
+  var h=Math.floor(m/60);if(h<24)return plural(h,'hour')+' ago';
+  var d=Math.floor(h/24);if(d<2)return 'yesterday';if(d<14)return d+' days ago';
+  if(d<60)return plural(Math.floor(d/7),'week')+' ago';
+  return plural(Math.floor(d/30),'month')+' ago';
+}
+function paras(b){return String(b).split(/\n{2,}/).map(function(p){return '<p>'+esc(p).replace(/\n/g,'<br>')+'</p>'}).join('')}
+function mod(n,m){return ((n%m)+m)%m}
+function dayIndex(){var n=new Date();return Math.floor((n.getTime()-n.getTimezoneOffset()*6e4)/D)}
+function todayIdx(){return mod(dayIndex(),PROMPTS.length)}
+
+/* ---------- toasts, modal, reader ---------- */
+function toast(msg){
+  var t=document.createElement('div');t.className='toast';t.textContent=msg;$('#toasts').appendChild(t);
+  setTimeout(function(){t.classList.add('out');setTimeout(function(){t.remove()},500)},4300);
+}
+var modalOpener=null,readerState={open:false,id:null,opener:null};
+function syncInert(){
+  var m=!$('#modal-root').hidden,r=!$('#reader-root').hidden;
+  $('.site').inert=m||r;$('#reader-root').inert=m;
+  document.body.style.overflow=(m||r)?'hidden':'';
+}
+function openModal(title,inner){
+  closeModal(true);modalOpener=document.activeElement;
+  var root=$('#modal-root');
+  root.innerHTML='<div class="scrim" data-action="close-modal"></div><div class="modal" role="dialog" aria-modal="true" aria-labelledby="m-title" tabindex="-1"><h2 id="m-title">'+esc(title)+'</h2>'+inner+'</div>';
+  root.hidden=false;syncInert();$('.modal',root).focus();return $('.modal',root);
+}
+function closeModal(silent){
+  var root=$('#modal-root');if(root.hidden)return;
+  root.hidden=true;root.innerHTML='';syncInert();
+  if(!silent&&modalOpener&&document.contains(modalOpener))modalOpener.focus();
+}
+function reactionsHTML(id){
+  var m=mine(id);
+  return '<div class="reacts" role="group" aria-label="Respond to this letter">'+REACTIONS.map(function(r){
+    return '<button type="button" class="react" data-action="react" data-id="'+id+'" data-k="'+r[0]+'" aria-pressed="'+(!!m[r[0]])+'">'+r[1]+'</button>';
+  }).join('')+'</div>';
+}
+function resonateBtn(id){
+  return '<button type="button" class="btn small" data-action="react" data-id="'+id+'" data-k="resonated" aria-pressed="'+(!!mine(id).resonated)+'">This resonated with me</button>';
+}
+function paperHTML(l,mode){
+  var h=mode==='page'?'h1':'h2';
+  return '<article class="paper r-paper'+(l.hand?' hand':'')+'" aria-labelledby="'+(mode==='page'?'d-title':'r-title')+'">'+
+   '<div class="meta"><span class="cat">'+esc(l.category)+'</span><time>'+esc(ago(l.createdAt))+'</time></div>'+
+   '<'+h+' class="ptitle" id="'+(mode==='page'?'d-title':'r-title')+'" tabindex="-1">'+esc(l.title)+'</'+h+'>'+
+   '<div class="letter-body">'+paras(l.body)+'</div>'+
+   '<p class="sign">Unsent, and left here.</p>'+
+   '<div class="react-block">'+resonateBtn(l.id)+reactionsHTML(l.id)+'</div></article>';
+}
+function pickRandom(){
+  var pool=pub();if(!pool.length)return null;
+  var c=pool.filter(function(x){return x.id!==readerState.id});
+  var arr=c.length?c:pool;return arr[Math.floor(Math.random()*arr.length)];
+}
+function openReader(opener){
+  var l=pickRandom();
+  if(!l){toast('There are no public letters to draw right now.');$$('.envelope.open').forEach(function(e){e.classList.remove('open')});return}
+  if(!readerState.open)readerState.opener=opener||document.activeElement;
+  readerState.open=true;readerState.id=l.id;
+  var root=$('#reader-root');
+  root.innerHTML='<div class="reader" role="dialog" aria-modal="true" aria-label="A letter from the archive"><div class="streak" aria-hidden="true"></div><div class="r-in">'+
+   '<div class="r-top"><p>A letter from the archive. Written by a stranger and not addressed to you, but you are welcome to read it.</p><button type="button" class="btn quiet small" data-action="close-reader">Close</button></div>'+
+   paperHTML(l,'reader')+
+   '<div class="r-actions"><button type="button" class="btn primary" data-action="another">Show me another</button><button type="button" class="btn" data-action="share" data-id="'+l.id+'">Share a link</button><button type="button" class="btn quiet" data-action="report" data-id="'+l.id+'">Report this letter</button></div></div></div>';
+  root.hidden=false;syncInert();
+  var t=$('#r-title',root);if(t)t.focus({preventScroll:true});
+  $('.reader',root).scrollTop=0;
+}
+function closeReader(silent){
+  var root=$('#reader-root');if(root.hidden)return;
+  root.hidden=true;root.innerHTML='';readerState.open=false;readerState.id=null;syncInert();
+  $$('.envelope.open').forEach(function(e){e.classList.remove('open')});
+  if(!silent&&readerState.opener&&document.contains(readerState.opener))readerState.opener.focus();
+}
+
+/* ---------- views ---------- */
+function letterCard(l){
+  var ex=l.body.slice(0,560);
+  return '<article class="card"><div class="meta"><span class="cat">'+esc(l.category)+'</span><time>'+esc(ago(l.createdAt))+'</time></div>'+
+   '<h3>'+esc(l.title)+'</h3><div class="preview">'+paras(ex)+'</div>'+
+   '<a class="read" href="#/letter/'+l.id+'" aria-label="Read the full letter: '+esc(l.title)+'">Read the full letter</a></article>';
+}
+function promptCard(){
+  var i=todayIdx();
+  return '<div class="prompt-card"><p class="prompt-text">'+esc(PROMPTS[i])+'</p><a class="btn primary" href="#/write?p='+i+'">Start a letter with this prompt</a></div>';
+}
+function home(){
+  var feat=pub().slice(0,6);
+  var thread=feat.length?'<div class="thread">'+feat.map(function(l){return '<div class="thread-item">'+letterCard(l)+'</div>'}).join('')+'</div>':
+    '<div class="empty"><h3>The sky is quiet tonight</h3><p>No letters are public right now. Be the first to leave one.</p><a class="btn primary" href="#/write">Write a letter</a></div>';
+  return '<div class="wrap"><section class="hero" aria-labelledby="hero-h">'+
+   '<div><h1 id="hero-h" class="rise">Some things stay with us.</h1>'+
+   '<p class="lede rise d2">Unsent letters. Unspoken truths. Feelings with nowhere to go. Leave your words here, among strangers who might understand.</p>'+
+   '<div class="hero-cta rise d3"><a class="btn primary" href="#/write">Release Your Words</a><button type="button" class="btn" data-action="random">Read a Stranger\'s Letter</button></div>'+
+   '<p class="whisper rise d4">Somewhere in this universe, someone understands.</p></div>'+
+   '<div class="env-stage rise d2"><div class="env-wrap"><button type="button" class="envelope" data-action="envelope" aria-label="Open the envelope to read a letter from the archive">'+
+   '<span class="env-back"></span><span class="env-paper" aria-hidden="true">To whoever finds this,<br>I wanted to say</span><span class="env-front"></span><span class="env-flap"></span><span class="env-seal"></span></button>'+
+   '<p class="env-cap">Select the envelope to open a letter.</p></div></div></section>'+
+   '<section class="section" aria-labelledby="feat-h" style="padding-top:0"><div class="feature"><div><h2 id="feat-h">A Letter From Somewhere</h2>'+
+   '<p>Draw one letter at random from the archive. It was written by a stranger and is not addressed to you, but you are welcome to read it.</p>'+
+   '<button type="button" class="btn primary" data-action="random">Draw a letter</button></div>'+
+   '<svg viewBox="0 0 260 180" fill="none" aria-hidden="true"><path d="M20 140 L80 80 L130 110 L190 40 L240 70" stroke="#C39A9E" stroke-opacity=".5"/><g fill="#F1E8DF"><circle cx="20" cy="140" r="2.5"/><circle cx="80" cy="80" r="3.5" fill="#C39A9E"/><circle cx="130" cy="110" r="2"/><circle cx="190" cy="40" r="4" fill="#C39A9E"/><circle cx="240" cy="70" r="2.5"/></g><circle cx="190" cy="40" r="12" stroke="#C39A9E" stroke-opacity=".3"/></svg></div></section>'+
+   '<section class="section" aria-labelledby="rec-h"><div class="sec-head"><h2 id="rec-h">Recently released</h2><p class="lead">Every letter here was reviewed before it was shown. The letters in this demo are fictional samples.</p></div>'+thread+
+   '<p style="text-align:center;margin-top:3rem"><a class="btn" href="#/explore">Explore all letters</a></p></section>'+
+   '<section class="section" aria-labelledby="dp-h"><div class="sec-head"><h2 id="dp-h">Today\'s prompt</h2><p class="lead">Not sure where to begin? Start with a question.</p></div>'+promptCard()+'</section></div>';
+}
+
+var ex={q:'',cat:'All',sort:'recent',shuffle:[]};
+function explore(){
+  return '<section class="wrap page"><header class="page-head"><h1>Explore letters</h1><p class="lead">Search the archive, filter by category, or let one find you at random.</p></header>'+
+   '<div class="controls"><div class="search-row"><div><label for="q">Search letters</label><input id="q" type="search" value="'+esc(ex.q)+'" placeholder="Try a word like tea, airport or Tuesday" autocomplete="off"></div>'+
+   '<div><label for="sort">Sort by</label><select id="sort"><option value="recent"'+(ex.sort==='recent'?' selected':'')+'>Most recent</option><option value="resonant"'+(ex.sort==='resonant'?' selected':'')+'>Most resonant</option><option value="random"'+(ex.sort==='random'?' selected':'')+'>Random order</option></select></div>'+
+   '<button type="button" class="btn" data-action="random">Random letter</button></div>'+
+   '<div class="chips" role="group" aria-label="Filter by category">'+['All'].concat(CATS).map(function(c){return '<button type="button" class="chip" data-action="cat" data-c="'+esc(c)+'" aria-pressed="'+(ex.cat===c)+'">'+esc(c)+'</button>'}).join('')+'</div></div>'+
+   '<p id="count" class="muted" aria-live="polite"></p><h2 class="sr">Letters</h2><div id="results" class="grid"></div></section>';
+}
+function updateExplore(){
+  var res=$('#results');if(!res)return;
+  var toks=ex.q.toLowerCase().split(/\s+/).filter(Boolean);
+  var list=pub().filter(function(l){
+    if(ex.cat!=='All'&&l.category!==ex.cat)return false;
+    var hay=(l.title+' '+l.body+' '+l.category+' '+(l.mood||'')).toLowerCase();
+    return toks.every(function(t){return hay.indexOf(t)>-1});
+  });
+  if(ex.sort==='resonant')list.sort(function(a,b){return score(b)-score(a)||b.createdAt-a.createdAt});
+  else if(ex.sort==='random'){
+    var order=ex.shuffle;list.sort(function(a,b){return order.indexOf(a.id)-order.indexOf(b.id)});
+  }
+  var n=list.length,filtered=ex.q||ex.cat!=='All';
+  $('#count').textContent=plural(n,'letter')+(filtered?' found':'');
+  res.innerHTML=n?list.map(letterCard).join(''):
+   '<div class="empty"><h3>Nothing matches yet</h3><p>No letters match those filters. Try a different word or clear the filters.</p><button type="button" class="btn" data-action="clear">Clear filters</button></div>';
+}
+function shuffleIds(){
+  var ids=pub().map(function(l){return l.id}),i,j,t;
+  for(i=ids.length-1;i>0;i--){j=Math.floor(Math.random()*(i+1));t=ids[i];ids[i]=ids[j];ids[j]=t}
+  ex.shuffle=ids;
+}
+function detail(id){
+  var l=getLetter(id);
+  if(!l||stat(l)!=='approved')return '<section class="wrap page"><div class="reading"><div class="empty"><h1 style="font-size:2.4rem;margin-bottom:.7rem">This letter isn\'t here</h1><p>It may have been removed, or it may never have been published.</p><a class="btn primary" href="#/explore">Explore letters</a></div></div></section>';
+  document.title=l.title+' | The Unsent Universe';
+  return '<section class="wrap page"><div class="reading"><a class="back" href="#/explore">Back to all letters</a>'+paperHTML(l,'page')+
+   '<div class="actions"><button type="button" class="btn" data-action="share" data-id="'+l.id+'">Share a link</button><button type="button" class="btn quiet" data-action="report" data-id="'+l.id+'">Report this letter</button><button type="button" class="btn quiet" data-action="random">Read another letter</button></div></div></section>';
+}
+
+var draft=newDraft(),wstep='compose';
+function newDraft(){return {title:'',body:'',category:'',mood:'',consent:false,prompt:'',hp:''}}
+function write(){
+  if(wstep==='preview')return previewView();
+  if(wstep==='done')return doneView();
+  return composeView();
+}
+function composeView(){
+  return '<section class="wrap page"><header class="page-head"><h1>Write a letter</h1><p class="lead">Write to someone, to a younger version of yourself, or to no one at all. Nothing here is sent to the person you are writing to.</p></header>'+
+  '<div class="write-grid"><div>'+
+  '<div class="notice" role="note"><strong>Keep it anonymous.</strong> Please leave out real names, addresses, phone numbers, emails, passwords and anything else that could identify you or someone else. Use "you" or a nickname instead.</div>'+
+  (draft.prompt?'<p class="prompt-hint">'+esc(draft.prompt)+'</p>':'')+
+  '<form id="wform" novalidate><div class="hp" aria-hidden="true"><label for="w-hp">Leave this field empty</label><input id="w-hp" name="website" tabindex="-1" autocomplete="off" value="'+esc(draft.hp)+'"></div>'+
+  '<div class="field"><label for="w-title">Letter title</label><input id="w-title" maxlength="90" value="'+esc(draft.title)+'" aria-describedby="e-title" placeholder="To the person I never thanked"><p class="err" id="e-title" role="alert" hidden></p></div>'+
+  '<div class="field"><div class="row"><label for="w-body">Your letter</label><span class="counter" id="w-count">'+draft.body.length+' / 3000</span></div>'+
+  '<textarea id="w-body" maxlength="3000" aria-describedby="e-body h-body" placeholder="Write what you never found the words to say…">'+esc(draft.body)+'</textarea>'+
+  '<p class="hint" id="h-body">At least 40 characters. You can stop at any time, and you never have to share more than you want to.</p><p class="err" id="e-body" role="alert" hidden></p></div>'+
+  '<div class="two"><div class="field"><label for="w-cat">Category (optional)</label><select id="w-cat"><option value="">No category</option>'+CATS.map(function(c){return '<option'+(draft.category===c?' selected':'')+'>'+esc(c)+'</option>'}).join('')+'</select></div>'+
+  '<div class="field"><label for="w-mood">Mood (optional)</label><select id="w-mood"><option value="">No mood</option>'+MOODS.map(function(c){return '<option'+(draft.mood===c?' selected':'')+'>'+esc(c)+'</option>'}).join('')+'</select></div></div>'+
+  '<div class="check"><input type="checkbox" id="w-consent"'+(draft.consent?' checked':'')+' aria-describedby="e-consent"><label for="w-consent">I want to submit this letter for public display after it has been reviewed. I understand that I can ask for it to be removed later.</label></div><p class="err" id="e-consent" role="alert" hidden></p>'+
+  '<button type="submit" class="btn primary">Preview your letter</button></form></div>'+
+  '<aside class="side" aria-labelledby="side-h"><h2 id="side-h">How this works</h2><ul><li>Your letter is reviewed by a person before anyone can read it.</li><li>No account is needed, and your name is never shown.</li><li>Anonymous means the public will not see who you are. It does not mean untraceable: any website can technically see things like your network address, and this page asks for nothing more than your words.</li><li>Letters that include identifying details, threats, or targeted abuse are not published.</li></ul>'+
+  '<p>Writing about something painful? Take your time. If you are in immediate danger, please contact your local emergency services.</p><p style="margin:0"><a href="#/guidelines">Community guidelines</a></p></aside></div></section>';
+}
+function previewView(){
+  var l={category:draft.category||'Other',createdAt:Date.now(),title:draft.title,body:draft.body,id:'preview'};
+  return '<section class="wrap page"><div class="reading"><header class="page-head"><h1>Preview your letter</h1><p class="lead">This is how your letter will look if a moderator approves it. Nothing has been submitted yet.</p></header>'+
+  '<article class="paper"><div class="meta"><span class="cat">'+esc(l.category)+'</span><span>'+(draft.mood?esc(draft.mood):'')+'</span></div><h2 class="ptitle">'+esc(l.title)+'</h2><div class="letter-body">'+paras(l.body)+'</div><p class="sign">Unsent, and left here.</p></article>'+
+  '<div class="actions"><button type="button" class="btn" data-action="edit">Edit letter</button><button type="button" class="btn primary" data-action="submit-letter">Submit for review</button></div></div></section>';
+}
+function doneView(){
+  return '<section class="wrap page"><div class="done"><svg viewBox="0 0 120 120" fill="none" aria-hidden="true"><circle class="ring" cx="60" cy="60" r="54" stroke="#C39A9E" stroke-width="1.5"/><path class="star" d="M60 28 L67 53 L92 60 L67 67 L60 92 L53 67 L28 60 L53 53 Z" stroke="#F1E8DF" stroke-width="1.5"/></svg>'+
+  '<h1 id="done-h" tabindex="-1" style="font-size:clamp(2.2rem,6vw,3.4rem);font-weight:400">Your letter is waiting for review</h1>'+
+  '<p class="lead">Nothing is published until a moderator has read it. In this demo your letter is stored only in this browser. No server received it, and no one else can see it.</p>'+
+  '<div class="actions" style="justify-content:center"><a class="btn primary" href="#/admin">Review it in the moderation demo</a><button type="button" class="btn" data-action="write-another">Write another letter</button><a class="btn quiet" href="#/">Return home</a></div></div></section>';
+}
+function piiIssues(t){
+  var out=[],m;
+  if(/[\w.+-]+@[\w-]+\.[\w.-]+/.test(t))out.push('an email address');
+  m=t.match(/\+?\d[\d\s().-]{7,}\d/g)||[];
+  if(m.some(function(x){return x.replace(/\D/g,'').length>=9}))out.push('what looks like a phone number');
+  if(/(https?:\/\/|www\.)\S+/i.test(t))out.push('a web link');
+  return out;
+}
+function promptPage(){
+  var i=todayIdx(),dt=new Date().toLocaleDateString(undefined,{weekday:'long',day:'numeric',month:'long'});
+  var past=[1,2,3].map(function(n){var k=mod(i-n,PROMPTS.length);return '<button type="button" data-action="use-prompt" data-i="'+k+'">'+esc(PROMPTS[k])+'</button>'}).join('');
+  return '<section class="wrap page"><header class="page-head"><h1>Daily prompt</h1><p class="lead">One question a day, for the days when you want to write but do not know where to start. Today is '+esc(dt)+'.</p></header>'+
+  '<div class="prompt-card prompt-big"><p class="prompt-text">'+esc(PROMPTS[i])+'</p><a class="btn primary" href="#/write?p='+i+'">Start a letter with this prompt</a></div>'+
+  '<div class="past"><h2 style="font-size:1.6rem;margin-bottom:.4rem">Earlier this week</h2>'+past+'</div></section>';
+}
+function about(){
+  return '<section class="wrap page"><header class="page-head"><h1>About</h1><p class="lead">A quiet place for words that have nowhere else to go.</p></header><div class="prose">'+
+  '<p>Most of us carry sentences we never said: a thank-you that came too late, an apology we could not find the courage for, a goodbye that never happened. The Unsent Universe gives those words somewhere to exist, among strangers who might recognise them.</p>'+
+  '<h2>What we believe</h2><ul><li><strong>Gentleness over attention.</strong> There are no follower counts, rankings or public scores. Reactions are quiet, and nobody is told how many people felt something.</li>'+
+  '<li><strong>Consent first.</strong> Letters are only shown if the writer has agreed to public display and a person has reviewed them.</li>'+
+  '<li><strong>Honest anonymity.</strong> Your name is never shown. We will not promise more than the technology can guarantee.</li>'+
+  '<li><strong>No private messaging.</strong> Strangers can read and react, nothing more. This is not a place to find people or to be found.</li></ul>'+
+  '<div class="callout"><p style="margin:0"><strong>About this build.</strong> This is a demo with fictional sample letters. There is no live community yet, and nothing you write here leaves your browser.</p></div>'+
+  '<p><a class="btn primary" href="#/write">Write a letter</a></p></div></section>';
+}
+function guidelines(){
+  return '<section class="wrap page"><header class="page-head"><h1>Community guidelines</h1><p class="lead">What belongs here, what does not, and how we keep it safe.</p></header><div class="prose">'+
+  '<h2>What belongs here</h2><p>Unsent letters, gratitude that came late, apologies, memories, reflections, and words you wish you could say to someone.</p>'+
+  '<h2>Keep it anonymous</h2><p>Do not include real names, addresses, phone numbers, emails, workplaces, usernames, passwords or anything else that could identify you or another person. Letters that do will be returned or rejected.</p>'+
+  '<h2>What we will not publish</h2><ul><li>Threats, harassment, or content aimed at a specific person.</li><li>Content that encourages self-harm or glorifies abuse.</li><li>Spam, advertising, links, or requests to contact the writer.</li><li>Anything that identifies a private individual.</li></ul>'+
+  '<h2>How moderation works</h2><p>Every submission goes into a review queue. A person reads it before anything is shown. Approved letters can still be reported by readers and removed later.</p>'+
+  '<h2>Reporting and removal</h2><p>Every letter has a "Report this letter" option. If you wrote a letter and want it gone, use the removal request form on the <a href="#/contact">contact page</a>.</p>'+
+  '<div class="callout"><p style="margin:0"><strong>If you are struggling.</strong> Writing can help, and you never have to share more than you want to. If you are in immediate danger or thinking about harming yourself, please contact your local emergency services or someone you trust right now.</p></div></div></section>';
+}
+function privacy(){
+  return '<section class="wrap page"><header class="page-head"><h1>Privacy policy</h1><p class="lead">What is collected, where it lives, and how it is deleted.</p></header><div class="prose">'+
+  '<div class="callout"><p style="margin:0">This page describes the demo you are using now, followed by what a live deployment using the included database setup would store. A site owner must review and complete it before launch. It is not legal advice.</p></div>'+
+  '<h2>In this demo</h2><ul><li>Letters you submit, your reactions, reports, removal requests, moderation changes and submission times are stored in your browser\'s local storage under the key <code>uu:demo:v1</code>.</li><li>None of it is sent to a server. Clearing your site data, or using "Reset demo data" in the moderation demo, deletes it.</li><li>This page does not add analytics or advertising trackers and sets no cookies.</li><li>Fonts load from Google Fonts, so Google can see that your browser requested them.</li></ul>'+
+  '<h2>In a live deployment</h2><ul><li><strong>Letters:</strong> title, text, optional category and mood, timestamps and moderation status. No name, email or account is collected from writers.</li><li><strong>Reactions:</strong> tied to a random token kept in the browser, not to an identity.</li><li><strong>Rate limiting:</strong> a salted hash of the network address, kept for no more than 24 hours.</li><li><strong>Reports and removal requests:</strong> the reason and any note you write.</li><li><strong>Moderators:</strong> sign in with an account, and only they can see unpublished letters.</li></ul>'+
+  '<h2>Retention</h2><p>Suggested defaults in the included setup: unreviewed letters are deleted after 30 days, rejected letters after 14 days, handled reports after 90 days. Published letters stay until removed.</p>'+
+  '<h2>Deleting a letter</h2><p>Because letters are anonymous, the site cannot verify who wrote one. Send a removal request describing the letter and it will be reviewed promptly. See the <a href="#/contact">contact page</a>.</p></div></section>';
+}
+function contact(){
+  return '<section class="wrap page"><header class="page-head"><h1>Contact</h1><p class="lead">This demo has no inbox. When the site is deployed, its owner adds a real address here.</p></header><div class="prose">'+
+  '<h2>Request removal of a letter</h2><p>Because letters are anonymous, we cannot confirm who wrote one. Tell us which letter and why. In this demo, the request goes to the moderation demo queue in your browser.</p></div>'+
+  '<form id="rform" novalidate style="max-width:34rem;margin-top:1rem"><div class="field"><label for="r-ref">Letter title or link</label><input id="r-ref" maxlength="300" aria-describedby="e-ref"><p class="err" id="e-ref" role="alert" hidden></p></div>'+
+  '<div class="field"><label for="r-det">Anything we should know (optional)</label><textarea id="r-det" maxlength="1000" style="min-height:8rem"></textarea><p class="hint">Please do not include your name or contact details.</p></div>'+
+  '<button class="btn primary" type="submit">Send removal request</button></form></section>';
+}
+
+var adminTab='pending';
+function admin(){
+  var d=load(),all=allLetters().sort(function(a,b){return b.createdAt-a.createdAt});
+  var by=function(f){return all.filter(function(l){return f.indexOf(stat(l))>-1})};
+  var pend=by(['pending']),live=by(['approved']),gone=by(['rejected','removed']);
+  var reps=d.reports.filter(function(r){return !r.handled}),rems=d.removals.filter(function(r){return !r.handled});
+  function tab(k,label,n){return '<button type="button" class="chip" data-action="tab" data-t="'+k+'" aria-pressed="'+(adminTab===k)+'">'+label+' ('+n+')</button>'}
+  function item(l,btns){
+    return '<div class="item"><span class="tag">'+(l.sample?'Sample letter':'Submitted from this browser')+'</span><h3>'+esc(l.title)+'</h3><div class="meta"><span class="cat">'+esc(l.category)+'</span><time>'+esc(ago(l.createdAt))+'</time></div>'+
+    '<details><summary>Read the letter</summary><div class="letter-body">'+paras(l.body)+'</div></details><div class="actions">'+btns+'</div></div>';
+  }
+  var b=function(a,id,label,cls){return '<button type="button" class="btn small '+(cls||'')+'" data-action="'+a+'" data-id="'+id+'">'+label+'</button>'};
+  var body='';
+  if(adminTab==='pending')body=pend.length?pend.map(function(l){return item(l,b('approve',l.id,'Approve','primary')+b('reject',l.id,'Reject'))}).join(''):'<div class="empty"><h3>Nothing waiting</h3><p>New submissions from this browser appear here before they are public.</p><a class="btn" href="#/write">Write a letter</a></div>';
+  if(adminTab==='live')body=live.map(function(l){return item(l,'<a class="btn small" href="#/letter/'+l.id+'">View public page</a>'+b('remove',l.id,'Remove'))}).join('');
+  if(adminTab==='gone')body=gone.length?gone.map(function(l){return item(l,'<span class="tag">'+stat(l)+'</span>'+b('restore',l.id,'Move back to pending'))}).join(''):'<div class="empty"><h3>Nothing here</h3><p>Rejected and removed letters appear here.</p></div>';
+  if(adminTab==='reports')body=reps.length?reps.map(function(r){var l=getLetter(r.letterId);return '<div class="item"><span class="tag">Report</span><h3>'+esc(l?l.title:'Unknown letter')+'</h3><p style="margin:.4rem 0"><strong>'+esc(r.reason)+'</strong>'+(r.note?'<br>'+esc(r.note):'')+'</p><div class="meta"><time>'+esc(ago(r.at))+'</time></div><div class="actions">'+b('dismiss-report',r.id,'Dismiss report')+(l&&stat(l)==='approved'?b('remove-reported',r.id,'Remove letter','primary'):'')+'</div></div>'}).join(''):'<div class="empty"><h3>No open reports</h3><p>Reports from readers appear here.</p></div>';
+  if(adminTab==='removals')body=rems.length?rems.map(function(r){return '<div class="item"><span class="tag">Removal request</span><h3>'+esc(r.ref)+'</h3>'+(r.details?'<p style="margin:.4rem 0">'+esc(r.details)+'</p>':'')+'<div class="meta"><time>'+esc(ago(r.at))+'</time></div><div class="actions">'+b('handle-removal',r.id,'Mark as handled')+'</div></div>'}).join(''):'<div class="empty"><h3>No open requests</h3><p>Removal requests from the contact page appear here.</p></div>';
+  return '<section class="wrap page"><header class="page-head"><h1>Moderation</h1><p class="lead">Review submissions, approve or reject them, and remove published letters.</p></header>'+
+  '<div class="callout"><p style="margin:0"><strong>Demo moderation.</strong> There is no sign-in here because there is no server and no one else\'s data to protect: this view only changes what is saved in this browser. In a live deployment, moderation requires a real account and is enforced by the database, not by this page.</p></div>'+
+  '<div class="tabs" role="group" aria-label="Moderation sections">'+tab('pending','Pending review',pend.length)+tab('live','Published',live.length)+tab('gone','Rejected and removed',gone.length)+tab('reports','Reports',reps.length)+tab('removals','Removal requests',rems.length)+'</div>'+body+
+  '<p style="margin-top:2.5rem"><button type="button" class="btn quiet" data-action="reset-demo">Reset demo data</button></p></section>';
+}
+
+/* ---------- router ---------- */
+var posts={};
+function parse(){
+  var h=location.hash.slice(1)||'/',i=h.indexOf('?'),path=i>-1?h.slice(0,i):h,qs=new URLSearchParams(i>-1?h.slice(i+1):'');
+  return {path:path,parts:path.split('/').filter(Boolean),qs:qs};
+}
+var TITLES={'/':'The Unsent Universe','/explore':'Explore letters','/write':'Write a letter','/prompt':'Daily prompt','/about':'About','/guidelines':'Community guidelines','/privacy':'Privacy policy','/admin':'Moderation','/contact':'Contact'};
+function render(){
+  closeReader(true);closeModal(true);closeMenu();
+  var r=parse(),main=$('#main'),html,key=r.path;
+  if(r.parts[0]==='letter'&&r.parts[1]){html=detail(decodeURIComponent(r.parts[1]));key='/explore'}
+  else if(key==='/'||key===''){html=home();key='/'}
+  else if(key==='/explore'){if(ex.sort==='random'&&!ex.shuffle.length)shuffleIds();html=explore()}
+  else if(key==='/write'){
+    if(wstep==='done')draft=newDraft();
+    wstep='compose';
+    var p=r.qs.get('p');if(p!==null&&PROMPTS[+p]!==undefined)draft.prompt=PROMPTS[+p];
+    html=write();
+  }
+  else if(key==='/prompt')html=promptPage();
+  else if(key==='/about')html=about();
+  else if(key==='/guidelines')html=guidelines();
+  else if(key==='/privacy')html=privacy();
+  else if(key==='/admin')html=admin();
+  else if(key==='/contact')html=contact();
+  else{html='<section class="wrap page"><div class="empty"><h1 style="font-size:2.4rem;margin-bottom:.7rem">Lost in the dark</h1><p>That page doesn\'t exist.</p><a class="btn primary" href="#/">Go home</a></div></section>';key='/404'}
+  if(!(r.parts[0]==='letter'))document.title=(TITLES[r.path]&&r.path!=='/'?TITLES[r.path]+' | ':'')+'The Unsent Universe';
+  main.innerHTML=html;
+  main.classList.remove('enter');void main.offsetWidth;main.classList.add('enter');
+  window.scrollTo(0,0);main.focus({preventScroll:true});
+  $$('.links a,.mobile-menu a').forEach(function(a){
+    var hp=a.getAttribute('href').slice(1);
+    if(hp===key)a.setAttribute('aria-current','page');else a.removeAttribute('aria-current');
+  });
+  if(key==='/explore')updateExplore();
+}
+function rerenderMain(html,focusSel){
+  var main=$('#main');main.innerHTML=html;main.classList.remove('enter');void main.offsetWidth;main.classList.add('enter');
+  window.scrollTo(0,0);var f=focusSel&&$(focusSel);(f||main).focus({preventScroll:true});
+}
+function closeMenu(){var m=$('#mmenu');if(!m||m.hidden)return;m.hidden=true;var b=$('#menu-btn');b.setAttribute('aria-expanded','false');b.textContent='Menu'}
+
+/* ---------- actions ---------- */
+function setStatus(id,s,msg){var d=load();d.status[id]=s;save();toast(msg)}
+async function copyText(t){
+  try{await navigator.clipboard.writeText(t);return true}catch(e){
+    try{var ta=document.createElement('textarea');ta.value=t;ta.style.cssText='position:fixed;opacity:0';document.body.appendChild(ta);ta.select();var ok=document.execCommand('copy');ta.remove();return ok}catch(e2){return false}
+  }
+}
+async function shareLetter(id){
+  var l=getLetter(id);if(!l)return;
+  if(!l.sample){toast('This letter exists only in your browser in demo mode, so a shared link would not open for anyone else.');return}
+  var url=location.href.split('#')[0]+'#/letter/'+id;
+  if(navigator.share){try{await navigator.share({title:l.title,text:'An anonymous letter from The Unsent Universe',url:url});return}catch(e){if(e&&e.name==='AbortError')return}}
+  if(await copyText(url)){toast('Link copied');return}
+  var m=openModal('Share this letter','<p>Copy this link to share the letter.</p><input readonly value="'+esc(url)+'" aria-label="Letter link"><div class="modal-actions"><button type="button" class="btn" data-action="close-modal">Close</button></div>');
+  var i=$('input',m);i.focus();i.select();
+}
+function reportModal(id){
+  var l=getLetter(id);if(!l)return;
+  openModal('Report this letter','<form id="repform" data-id="'+id+'" novalidate><fieldset><legend>Why are you reporting "'+esc(l.title)+'"?</legend>'+
+  REPORT_REASONS.map(function(r,i){return '<label class="radio"><input type="radio" name="reason" value="'+esc(r)+'"'+(i===0?' checked':'')+'><span>'+esc(r)+'</span></label>'}).join('')+'</fieldset>'+
+  '<label for="rep-note">Anything else we should know (optional)</label><textarea id="rep-note" maxlength="300" style="min-height:5.5rem"></textarea>'+
+  '<div class="modal-actions"><button type="button" class="btn quiet" data-action="close-modal">Cancel</button><button type="submit" class="btn primary">Send report</button></div></form>');
+}
+var handlers={
+  skip:function(el,e){e.preventDefault();$('#main').focus()},
+  'dismiss-demo':function(){$('#demo').hidden=true;try{sessionStorage.setItem('uu:demo-dismissed','1')}catch(e){}},
+  menu:function(){var m=$('#mmenu'),b=$('#menu-btn'),open=m.hidden;m.hidden=!open;b.setAttribute('aria-expanded',String(open));b.textContent=open?'Close':'Menu'},
+  random:function(el){openReader(el)},
+  envelope:function(el){if(el.classList.contains('open'))return;el.classList.add('open');setTimeout(function(){openReader(el)},reduced()?0:1100)},
+  'close-reader':function(){closeReader()},
+  another:function(){var op=readerState.opener;readerState.open=true;openReader(op);},
+  'close-modal':function(){closeModal()},
+  react:function(el){
+    var d=load(),id=el.dataset.id,k=el.dataset.k;d.reactions[id]=d.reactions[id]||{};
+    var on=!d.reactions[id][k];if(on)d.reactions[id][k]=true;else delete d.reactions[id][k];
+    save();
+    $$('[data-action=react][data-id="'+id+'"][data-k="'+k+'"]').forEach(function(b){b.setAttribute('aria-pressed',String(on))});
+    if(on)toast('Reaction saved in this browser.');
+  },
+  share:function(el){shareLetter(el.dataset.id)},
+  report:function(el){reportModal(el.dataset.id)},
+  cat:function(el){ex.cat=el.dataset.c;$$('.chip[data-action=cat]').forEach(function(c){c.setAttribute('aria-pressed',String(c===el))});updateExplore()},
+  clear:function(){ex.q='';ex.cat='All';var q=$('#q');if(q)q.value='';$$('.chip[data-action=cat]').forEach(function(c){c.setAttribute('aria-pressed',String(c.dataset.c==='All'))});updateExplore()},
+  'use-prompt':function(el){location.hash='#/write?p='+el.dataset.i},
+  edit:function(){wstep='compose';rerenderMain(write(),'#w-title')},
+  'write-another':function(){draft=newDraft();wstep='compose';rerenderMain(write(),'#w-title')},
+  'submit-letter':function(){
+    var d=load(),now=Date.now();
+    d.writes=d.writes.filter(function(t){return now-t<36e5});
+    if(draft.hp){toast('Something looked automated. Please try again.');return}
+    if(d.writes.length>=3){toast('You have submitted several letters in the last hour. Please try again a little later.');return}
+    if(!draft.consent){toast('Please confirm that you want this letter shown publicly.');return}
+    var id='l'+now.toString(36)+Math.random().toString(36).slice(2,6);
+    d.letters.push({id:id,title:draft.title.trim(),body:draft.body.trim(),category:draft.category||'Other',mood:draft.mood,createdAt:now,score:0,hand:false,status:'pending',sample:false});
+    d.writes.push(now);save();wstep='done';
+    rerenderMain(doneView(),'#done-h');toast('Submitted for review');
+  },
+  tab:function(el){adminTab=el.dataset.t;rerenderMain(admin())},
+  approve:function(el){setStatus(el.dataset.id,'approved','Approved');rerenderMain(admin())},
+  reject:function(el){setStatus(el.dataset.id,'rejected','Rejected');rerenderMain(admin())},
+  remove:function(el){setStatus(el.dataset.id,'removed','Removed');rerenderMain(admin())},
+  restore:function(el){setStatus(el.dataset.id,'pending','Moved back to pending');rerenderMain(admin())},
+  'dismiss-report':function(el){var d=load();d.reports.forEach(function(r){if(r.id===el.dataset.id)r.handled=true});save();toast('Report dismissed');rerenderMain(admin())},
+  'remove-reported':function(el){var d=load();d.reports.forEach(function(r){if(r.id===el.dataset.id){r.handled=true;d.status[r.letterId]='removed'}});save();toast('Removed');rerenderMain(admin())},
+  'handle-removal':function(el){var d=load();d.removals.forEach(function(r){if(r.id===el.dataset.id)r.handled=true});save();toast('Marked as handled');rerenderMain(admin())},
+  'reset-demo':function(){
+    openModal('Reset demo data?','<p>This clears the letters you submitted, your reactions, reports, removal requests and moderation changes in this browser. The sample letters return to their original state.</p><div class="modal-actions"><button type="button" class="btn quiet" data-action="close-modal">Cancel</button><button type="button" class="btn primary" data-action="confirm-reset">Reset demo data</button></div>');
+  },
+  'confirm-reset':function(){mem=fresh();save();closeModal(true);toast('Demo data reset');rerenderMain(admin())}
+};
+document.addEventListener('click',function(e){
+  var a=e.target.closest('[data-action]');
+  if(a&&handlers[a.dataset.action]){handlers[a.dataset.action](a,e)}
+  if(e.target.closest('.mobile-menu a'))closeMenu();
+});
+document.addEventListener('input',function(e){
+  var t=e.target,id=t.id;
+  if(id==='q'){ex.q=t.value;updateExplore()}
+  else if(id==='w-title')draft.title=t.value;
+  else if(id==='w-body'){draft.body=t.value;var c=$('#w-count');c.textContent=t.value.length+' / 3000';c.classList.toggle('near',t.value.length>2800)}
+  else if(id==='w-hp')draft.hp=t.value;
+});
+document.addEventListener('change',function(e){
+  var t=e.target,id=t.id;
+  if(id==='sort'){ex.sort=t.value;if(t.value==='random')shuffleIds();updateExplore()}
+  else if(id==='w-cat')draft.category=t.value;
+  else if(id==='w-mood')draft.mood=t.value;
+  else if(id==='w-consent')draft.consent=t.checked;
+});
+function fieldErr(inp,err,msg){
+  var i=$('#'+inp),e=$('#'+err);
+  if(msg){e.textContent=msg;e.hidden=false;if(i)i.setAttribute('aria-invalid','true')}
+  else{e.hidden=true;e.textContent='';if(i)i.removeAttribute('aria-invalid')}
+  return !!msg;
+}
+document.addEventListener('submit',function(e){
+  var f=e.target;
+  if(f.id==='wform'){
+    e.preventDefault();
+    draft.title=$('#w-title').value;draft.body=$('#w-body').value;draft.consent=$('#w-consent').checked;
+    var bad=[],tl=draft.title.trim().length,bl=draft.body.trim().length;
+    var issues=piiIssues(draft.title+' '+draft.body);
+    if(fieldErr('w-title','e-title',tl<3?'Give your letter a title of at least 3 characters.':''))bad.push('w-title');
+    if(fieldErr('w-body','e-body',bl<40?'Your letter needs at least 40 characters. You have '+bl+'.':(issues.length?'Your letter seems to include '+issues.join(' and ')+'. Please remove it so the letter stays anonymous.':'')))bad.push('w-body');
+    if(fieldErr('w-consent','e-consent',draft.consent?'':'Please confirm that you want to submit this letter for public display.'))bad.push('w-consent');
+    if(bad.length){$('#'+bad[0]).focus();return}
+    wstep='preview';rerenderMain(write());
+  }
+  else if(f.id==='repform'){
+    e.preventDefault();
+    var d=load(),r=$('input[name=reason]:checked',f);
+    d.reports.push({id:'r'+Date.now().toString(36)+Math.random().toString(36).slice(2,5),letterId:f.dataset.id,reason:r?r.value:'Something else',note:$('#rep-note').value.trim(),at:Date.now(),handled:false});
+    save();closeModal();toast('Report sent to the demo moderation queue');
+  }
+  else if(f.id==='rform'){
+    e.preventDefault();
+    var ref=$('#r-ref').value.trim();
+    if(fieldErr('r-ref','e-ref',ref.length<3?'Tell us which letter you mean, with its title or link.':'')){$('#r-ref').focus();return}
+    var d2=load();d2.removals.push({id:'q'+Date.now().toString(36)+Math.random().toString(36).slice(2,5),ref:ref,details:$('#r-det').value.trim(),at:Date.now(),handled:false});
+    save();f.reset();toast('Removal request recorded in this browser\'s demo queue');
+  }
+});
+document.addEventListener('keydown',function(e){
+  if(e.key==='Escape'){
+    if(!$('#modal-root').hidden){closeModal();return}
+    if(!$('#reader-root').hidden){closeReader();return}
+    closeMenu();
+  }
+  if(e.key==='Tab'){
+    var c=!$('#modal-root').hidden?$('#modal-root .modal'):(!$('#reader-root').hidden?$('#reader-root .reader'):null);
+    if(!c)return;
+    var f=$$('a[href],button,input,select,textarea,[tabindex]:not([tabindex="-1"])',c).filter(function(x){return !x.disabled&&x.offsetParent!==null});
+    if(!f.length)return;
+    var first=f[0],last=f[f.length-1];
+    if(e.shiftKey&&(document.activeElement===first||document.activeElement===c)){e.preventDefault();last.focus()}
+    else if(!e.shiftKey&&document.activeElement===last){e.preventDefault();first.focus()}
+  }
+});
+window.addEventListener('hashchange',render);
+
+/* ---------- atmosphere ---------- */
+function grain(){
+  var svg="<svg xmlns='http://www.w3.org/2000/svg' width='180' height='180'><filter id='n'><feTurbulence type='fractalNoise' baseFrequency='.85' numOctaves='2' stitchTiles='stitch'/><feColorMatrix values='0 0 0 0 1  0 0 0 0 .95  0 0 0 0 .9  0 0 0 .55 0'/></filter><rect width='100%' height='100%' filter='url(#n)'/></svg>";
+  $('.grain').style.backgroundImage='url("data:image/svg+xml,'+encodeURIComponent(svg)+'")';
+}
+function sky(){
+  var c=$('#sky'),x=c.getContext('2d'),w=0,h=0,stars=[],ptr={x:-999,y:-999,on:false},raf=0;
+  function size(){
+    var dpr=Math.min(window.devicePixelRatio||1,2);w=innerWidth;h=innerHeight;
+    c.width=w*dpr;c.height=h*dpr;x.setTransform(dpr,0,0,dpr,0,0);
+    var n=Math.max(50,Math.min(170,Math.round(w*h/11000)));stars=[];
+    for(var i=0;i<n;i++)stars.push({x:Math.random()*w,y:Math.random()*h,r:Math.random()*1.1+.25,a:Math.random()*.55+.25,s:Math.random()*.0012+.0004,p:Math.random()*6.28,t:Math.random()<.18});
+    draw(performance.now());
+  }
+  function draw(t){
+    x.clearRect(0,0,w,h);var i,s;
+    for(i=0;i<stars.length;i++){
+      s=stars[i];x.globalAlpha=s.a*(reduced()?1:.6+.4*Math.sin(t*s.s*6+s.p));
+      x.fillStyle=s.t?'#C39A9E':'#F1E8DF';x.beginPath();x.arc(s.x,s.y,s.r,0,6.2832);x.fill();
+    }
+    if(ptr.on&&!reduced()){
+      var near=stars.filter(function(q){return Math.hypot(q.x-ptr.x,q.y-ptr.y)<160}).sort(function(a,b){return a.x-b.x}).slice(0,6);
+      if(near.length>1){
+        x.globalAlpha=.28;x.strokeStyle='#C39A9E';x.lineWidth=.7;x.beginPath();
+        near.forEach(function(q,k){k?x.lineTo(q.x,q.y):x.moveTo(q.x,q.y)});x.stroke();
+        x.globalAlpha=.55;near.forEach(function(q){x.beginPath();x.arc(q.x,q.y,q.r+2.2,0,6.2832);x.stroke()});
+      }
+    }
+    x.globalAlpha=1;
+  }
+  function loop(t){draw(t);raf=(!reduced()&&!document.hidden)?requestAnimationFrame(loop):0}
+  function start(){if(!raf&&!reduced())raf=requestAnimationFrame(loop);else if(reduced())draw(0)}
+  window.addEventListener('resize',size);
+  window.addEventListener('pointermove',function(e){if(e.pointerType==='mouse'){ptr.x=e.clientX;ptr.y=e.clientY;ptr.on=true}});
+  document.addEventListener('mouseleave',function(){ptr.on=false});
+  document.addEventListener('visibilitychange',function(){if(!document.hidden&&!raf)start()});
+  (mq.addEventListener?mq.addEventListener('change',function(){raf=0;start()}):mq.addListener(function(){raf=0;start()}));
+  size();start();
+}
+
+(function init(){
+  try{if(sessionStorage.getItem('uu:demo-dismissed'))$('#demo').hidden=true}catch(e){}
+  grain();sky();render();
+})();
+})();
+</script>
+</body>
+</html>
